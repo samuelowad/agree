@@ -15,16 +15,12 @@ export class FarmsService {
   }
 
   public async createFarm(data: CreateFarmDto): Promise<Farm> {
-
-    try{
     const existingFarm = await this.findOneBy({ name:data.name });
     if (existingFarm) throw new UnprocessableEntityError("A farm with the same name already exists");
 
     const newFarm = this.farmsRepository.create(data);
-    return await this.farmsRepository.save(newFarm);
-    } catch (error) {
-      throw error;
-    }
+    return this.farmsRepository.save(newFarm);
+
   }
 
   public async findOneBy(param: FindOptionsWhere<Farm>): Promise<Farm | null> {
@@ -32,27 +28,19 @@ export class FarmsService {
   }
 
   public async deleteFarm(user:User, id: string): Promise<void> {
-    try {
       const farm = await this.findFarmByUserId(user, id);
       if(!farm) throw new Error("Farm not found")
 
       await this.farmsRepository.remove(farm)
-    } catch (error) {
-      console.log(error)
-      throw error;
-    }
   }
 
   public async updateFarm(user: User, id: string, updateData: Partial<Farm>): Promise<Farm> {
-    try {
       const farm = await this.findFarmByUserId(user, id);
       if (!farm) throw new Error("Farm not found");
 
       const updatedFarm = Object.assign(farm, updateData);
-      return await this.farmsRepository.save(updatedFarm);
-    } catch (error) {
-      throw error;
-    }
+      return  this.farmsRepository.save(updatedFarm);
+
   }
 
   public async getFarms(
@@ -77,6 +65,7 @@ export class FarmsService {
 
           let distanceMatrix;
           if ("coordinates" in farm.coordinates && "coordinates" in user.coordinates) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             distanceMatrix = await GoogleMapHelper.distancesMatrix({
               origins: [`${user.coordinates.coordinates[1]},${user.coordinates.coordinates[0]}`],
               destinations: [
@@ -94,6 +83,7 @@ export class FarmsService {
 
     if (filterOutliers) {
       const averageYield =
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return,@typescript-eslint/restrict-plus-operands
           farmsWithDistance.reduce((total: any, farm: { yield: any; }) => total + farm.yield, 0) /
           farmsWithDistance.length;
       const threshold = averageYield * 0.3;

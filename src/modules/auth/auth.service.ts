@@ -59,6 +59,7 @@ export class AuthService {
   public async getUserInfo(token: string): Promise<User> {
     try {
       const decodedToken = verify(token, config.JWT_SECRET) as { [key: string]: any };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const user = await this.usersService.findOneBy({ id: decodedToken.id });
 
       if (!user) {

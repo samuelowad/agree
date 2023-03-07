@@ -110,6 +110,7 @@ describe("FarmsController", () => {
       await createUser({ ...loginDto, coordinates: { type: "Point", coordinates: [0, 0] }, address });
 
       const user1loginRes = await agent.post("/api/v1/auth/login").send({ ...loginDto, email: user1.email });
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { token } = user1loginRes.body;
       const farm = await agent.post("/api/v1/farm").send(createFarmDto).set("Authorization", `Bearer ${token}`);
 

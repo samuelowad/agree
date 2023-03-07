@@ -15,11 +15,13 @@ export class GoogleMapHelper {
         },
       });
 
-      const { lng, lat } = await response.data.results[0].geometry.location;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const { lng, lat } = await response.data.results[0].geometry.location as { lng: number; lat: number };
 
      return  {type:"Point", coordinates:[lng, lat]};
     } catch (error) {
-      throw new Error("error getting coordinates:" + error.message);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      throw new Error(`error getting coordinates: ${error.message}`);
     }
   }
 
@@ -34,11 +36,11 @@ export class GoogleMapHelper {
           mode: "driving",
         },
       });
-      return response.data.rows[0].elements[0].distance.value;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      return response.data.rows[0]?.elements[0].distance.value as number;
     } catch (error) {
       console.log(error);
-      // @ts-ignore
-      throw new Error( response.data);
+      throw new Error( `${response?.data}`);
     }
   }
 }

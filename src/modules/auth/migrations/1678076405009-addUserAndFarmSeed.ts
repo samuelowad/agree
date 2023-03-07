@@ -11,11 +11,12 @@ import { CreateUserDto } from "../../users/dto/create-user.dto";
 
 
 export class addUserAndFarmSeed1678076405009 implements MigrationInterface {
-
+    // eslint-disable-next-line no-unused-vars
     public async up(_queryRunner: QueryRunner): Promise<void> {
         await this.seedData();
     }
 
+    // eslint-disable-next-line no-unused-vars,@typescript-eslint/require-await
     public async down(_queryRunner: QueryRunner): Promise<void> {
         return ;
     }

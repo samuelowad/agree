@@ -57,7 +57,10 @@ describe("FarmsService", () => {
 
       const createdFarm = await farmsService.createFarm(createFarmDto);
       expect(createdFarm).toBeInstanceOf(Farm);
-      expect(createdFarm).toMatchObject({ name: createFarmDto.name, size: createFarmDto.size, yield: createFarmDto.yield, address: createFarmDto.address, coordinates: createFarmDto.coordinates, user: createFarmDto.user });
+      expect(createdFarm).toMatchObject(
+          { name: createFarmDto.name, size: createFarmDto.size,
+            yield: createFarmDto.yield, address: createFarmDto.address,
+            coordinates: createFarmDto.coordinates, user: createFarmDto.user });
     });
 
     describe("with existing farm", () => {
@@ -103,7 +106,8 @@ describe("FarmsService", () => {
       const user2 = await usersService.createUser({ email: "use1r@test.com", password: "password", address: "address", coordinates:{type: "Point", coordinates: [33.803750, -86.669100]} })
       const farm = await farmsService.createFarm({...createFarmDto, user:user1});
       await farmsService.deleteFarm(user2, farm.id).catch((error) => {
-        expect(error.message).toBe("Farm not found");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect( error.message).toBe("Farm not found");
       });
 
     });
@@ -118,6 +122,7 @@ describe("FarmsService", () => {
       const user2 = await usersService.createUser({ email: "use1r@test.com", password: "password", address: "address", coordinates:{type: "Point", coordinates: [33.803750, -86.669100]} })
       const farm = await farmsService.createFarm({...createFarmDto, user:user1});
       await farmsService.updateFarm(user2, farm.id, {name:"test new"}).catch((error) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         expect(error.message).toBe("Farm not found");
       });
 

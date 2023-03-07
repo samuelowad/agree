@@ -48,6 +48,7 @@ export class FarmsController {
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
       const { user, id } : FindFarmDto = req.body as FindFarmDto;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const farm = await this.farmsService.updateFarm(user, id, {...req.body});
       res.status(200).send(farm);
     } catch (error) {

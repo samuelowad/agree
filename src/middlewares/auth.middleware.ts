@@ -8,6 +8,7 @@ export async function authorize(req: Request, _res: Response, next: NextFunction
         if (!token) throw new UnprocessableEntityError("Unauthorized request");
 
         const authService = new AuthService();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         req.body.user = await authService.getUserInfo(token);
 
         next();
